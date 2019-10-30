@@ -80,20 +80,21 @@ display_slice_bin <- function(center = TRUE, axes = "center", half_range = NULL,
     d <- anchored_orthogonal_distance(proj, data, anchor)
     x <- center(x)
     x <- x / half_range
-    binvec <- seq(-1, 1, length.out = nbin+1) #defining the bins along one axis
-    xbins <- cut(x[,1], binvec) #binning along x
-    ybins <- cut(x[,2], binvec) #binning along y
-    hbins <- as.data.frame(table(xbins, ybins)) #use table function to get 2D binning
-    z <- matrix(hbins$Freq, nrow=nbin) #read off frequency and write in a matrix for image function
-    par(mfrow=c(2,1))
-    par(mar=c(0, 5, 5, 5)) # by default image will fill the full space, so setting margins
+    binvec <- seq(-1.5, 1.5, length.out = nbin+1) #defining the bins along one axis
+    xbins_all <- cut(x[,1], binvec) #binning along x
+    ybins_all <- cut(x[,2], binvec) #binning along y
+    xbins_slice <- cut(x[d < h, 1], binvec) #binning along x
+    ybins_slice <- cut(x[d < h, 2], binvec) #binning along y
+    hbins_all <- as.data.frame(table(xbins_all, ybins_all)) #use table function to get 2D binning
+    hbins_slice <- as.data.frame(table(xbins_slice, ybins_slice)) #use table function to get 2D binning
+    z_all <- matrix(hbins_all$Freq, nrow=nbin) #read off frequency and write in a matrix for image function
+    z_slice <- matrix(hbins_slice$Freq, nrow=nbin) #read off frequency and write in a matrix for image function
+    z <- z_slice / z_all
     image(binvec, binvec, # first two arguments repeat bin boundaries
           z, # filling based on matrix with histogram counts
           col = rev(gray.colors(20, start = 0, end = 1)), # generate color scale from white to black
           axes=FALSE, xlab = "", ylab = "") # turn off axes and labels
-    par(mar=c(5, 5, 0, 5)) # by default image will fill the full space, so setting margins
-    par(xaxs="i")
-    draw_tour_axes(proj, labels, limits = 1, axes)
+    draw_tour_axes(proj, labels, limits = 1.5, axes)
 
   }
 
