@@ -1,6 +1,7 @@
-#' Display tour path with a sliced scatterplot
+#' Display tour path with as relative slice density
 #'
-#' Animate a 2D tour path with a sliced scatterplot.
+#' Animate a 2D tour path with a binned comparison
+#' between the density in the slice vs the full projected density
 #'
 #' @param axes position of the axes: center, bottomleft or off
 #' @param center if TRUE, centers projected data to (0,0).  This pins the
@@ -10,11 +11,6 @@
 #'   If not set, defaults to maximum distance from origin to each row of data.
 #' @param edges A two column integer matrix giving indices of ends of lines.
 #' @param edges.col colour of edges to be plotted, Defaults to "black.
-#' @param col color to be plotted.  Defaults to "black"
-#' @param pch_slice marker for plotting points inside the slice.
-#'   Defaults to 20.
-#' @param pch_other marker for plotting points outside the slice.
-#'   Defaults to 46.
 #' @param eps volume of the slice. If not set, suggested value is caluclated and
 #'   printed to the screen.
 #' @param anchor A vector specifying the reference point to anchor the slice.
@@ -33,15 +29,15 @@
 #' colnames(sphere5) <- c("x1", "x2", "x3", "x4", "x5")
 #'
 #' # Animate with the slice display using the default parameters
-#' animate_slice(sphere3)
-#' animate_slice(sphere5)
+#' animate_slice_bin(sphere3)
+#' animate_slice_bin(sphere5)
 #'
 #' # Animate with off-center anchoring
 #' anchor3 <- rep(0.7, 3)
 #' anchor5 <- rep(0.3, 5)
-#' animate_slice(sphere3, anchor = anchor3)
+#' animate_slice_bin(sphere3, anchor = anchor3)
 #' # Animate with thicker slice to capture more points in each view
-#' animate_slice(sphere5, anchor = anchor5, eps = 0.02)
+#' animate_slice_bin(sphere5, anchor = anchor5, eps = 0.02)
 
 
 display_slice_bin <- function(center = TRUE, axes = "center", half_range = NULL,
@@ -111,6 +107,7 @@ display_slice_bin <- function(center = TRUE, axes = "center", half_range = NULL,
 #' @rdname display_slice
 #' @inheritParams animate
 #' @export
-animate_slice_bin <- function(data, tour_path = grand_tour(), rescale = TRUE, ...) {
-  animate(data, tour_path, display_slice_bin(...), rescale = rescale)
+animate_slice_bin <- function(data, tour_path = grand_tour(), rescale = TRUE, start=NULL, ...) {
+  if (is.null(start)) start = basis_random(ncol(data))
+  animate(data, tour_path, display_slice_bin(...), rescale = rescale, start = start)
 }
