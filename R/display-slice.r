@@ -114,5 +114,6 @@ display_slice <- function(center = TRUE, axes = "center", half_range = NULL,
 #' @export
 animate_slice <- function(data, tour_path = grand_tour(), rescale = TRUE, start = NULL,  ...) {
   if (is.null(start)) start = basis_random(ncol(data))
-  animate(data, tour_path, display_slice(...), rescale = rescale, start = start)
+  animate(data, tour_path, display_slice(...), rescale = rescale, start = start,
+          ...)
 }
