@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Search for most interesting projection along frozen geodesics. — search_frozen_geodesic • tourr</title>
+<title>A pseudo-derivative, line search algorithm along frozen geodesics. — search_frozen_geodesic • tourr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -46,12 +46,8 @@
 
 
 
-<meta property="og:title" content="Search for most interesting projection along frozen geodesics. — search_frozen_geodesic" />
-<meta property="og:description" content="These three functions perform a corresponding role to
-search_geodesic, find_best_dir and
-find_path_peak but for the frozen tour.  They work by
-zero'ing out the frozen variables and travelling in that restricted
-subspace." />
+<meta property="og:title" content="A pseudo-derivative, line search algorithm along frozen geodesics. — search_frozen_geodesic" />
+<meta property="og:description" content="A pseudo-derivative, line search algorithm along frozen geodesics." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -92,7 +88,7 @@ subspace." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -114,11 +110,14 @@ subspace." />
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/ggobi/tourr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -135,22 +134,19 @@ subspace." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Search for most interesting projection along frozen geodesics.</h1>
+    <h1>A pseudo-derivative, line search algorithm along frozen geodesics.</h1>
     <small class="dont-index">Source: <a href='https://github.com/ggobi/tourr/blob/master/R/search-frozen-geodesic.r'><code>R/search-frozen-geodesic.r</code></a></small>
     <div class="hidden name"><code>search_frozen_geodesic.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These three functions perform a corresponding role to
-<code><a href='search_geodesic.html'>search_geodesic</a></code>, <code><a href='find_best_dir.html'>find_best_dir</a></code> and
-<code><a href='find_path_peak.html'>find_path_peak</a></code> but for the frozen tour.  They work by
-zero'ing out the frozen variables and travelling in that restricted
-subspace.</p>
+    <p>A pseudo-derivative, line search algorithm along frozen geodesics.</p>
     </div>
 
     <pre class="usage"><span class='fu'>search_frozen_geodesic</span><span class='op'>(</span>
   <span class='va'>current</span>,
   <span class='va'>index</span>,
+  <span class='va'>tries</span>,
   max.tries <span class='op'>=</span> <span class='fl'>5</span>,
   n <span class='op'>=</span> <span class='fl'>5</span>,
   <span class='va'>frozen</span>,
@@ -158,6 +154,47 @@ subspace.</p>
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>current</th>
+      <td><p>starting projection</p></td>
+    </tr>
+    <tr>
+      <th>index</th>
+      <td><p>index function</p></td>
+    </tr>
+    <tr>
+      <th>tries</th>
+      <td><p>the counter of the outer loop of the opotimiser</p></td>
+    </tr>
+    <tr>
+      <th>max.tries</th>
+      <td><p>maximum number of iteration before giving up</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>number of random steps to take to find best direction</p></td>
+    </tr>
+    <tr>
+      <th>frozen</th>
+      <td><p>a matrix of frozen variables</p></td>
+    </tr>
+    <tr>
+      <th>cur_index</th>
+      <td><p>the index value of the current basis</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>other arguments being passed into the <code>search_frozen_geodesic()</code>
+These three functions perform a corresponding role to
+<code><a href='search_geodesic.html'>search_geodesic</a></code>, <code><a href='find_best_dir.html'>find_best_dir</a></code> and
+<code><a href='find_path_peak.html'>find_path_peak</a></code> but for the frozen tour.  They work by
+zero'ing out the frozen variables and travelling in that restricted
+subspace.</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="to-do"><a class="anchor" href="#to-do"></a>To do</h2>
 

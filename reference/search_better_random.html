@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Search for a better projection based on simulataed annealing — search_better_random • tourr</title>
+<title>Search for a better projection using simulated annealing — search_better_random • tourr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -46,13 +46,11 @@
 
 
 
-<meta property="og:title" content="Search for a better projection based on simulataed annealing — search_better_random" />
+<meta property="og:title" content="Search for a better projection using simulated annealing — search_better_random" />
 <meta property="og:description" content="Given an initial \(t0\), the cooling scheme updates temperature at $$T = t0 /\log(i + 1)$$
 The candidate basis is sampled via $$B_j = (1 - \alpha) * B_i + \alpha * B$$ where alpha defines the neighbourhood, \(B_i\) is the current basis, B is a randomly generated basis
 The acceptance probability is calculated as $$prob = \exp{-abs(I(B_i) - I(B_j))/ T}$$
 For more information, see
-https://sci2s.ugr.es/sites/default/files/files/Teaching/GraduatesCourses/Metaheuristicas/Bibliography/1983-Science-Kirkpatrick-sim_anneal.pdf
-and
 https://projecteuclid.org/download/pdf_1/euclid.ss/1177011077" />
 <meta property="og:image" content="/logo.png" />
 
@@ -94,7 +92,7 @@ https://projecteuclid.org/download/pdf_1/euclid.ss/1177011077" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -116,11 +114,14 @@ https://projecteuclid.org/download/pdf_1/euclid.ss/1177011077" />
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/ggobi/tourr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -137,7 +138,7 @@ https://projecteuclid.org/download/pdf_1/euclid.ss/1177011077" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Search for a better projection based on simulataed annealing</h1>
+    <h1>Search for a better projection using simulated annealing</h1>
     <small class="dont-index">Source: <a href='https://github.com/ggobi/tourr/blob/master/R/search-better.r'><code>R/search-better.r</code></a></small>
     <div class="hidden name"><code>search_better_random.Rd</code></div>
     </div>
@@ -147,8 +148,6 @@ https://projecteuclid.org/download/pdf_1/euclid.ss/1177011077" />
 The candidate basis is sampled via $$B_j = (1 - \alpha) * B_i + \alpha * B$$ where alpha defines the neighbourhood, \(B_i\) is the current basis, B is a randomly generated basis
 The acceptance probability is calculated as $$prob = \exp{-abs(I(B_i) - I(B_j))/ T}$$
 For more information, see
-<a href='https://sci2s.ugr.es/sites/default/files/files/Teaching/GraduatesCourses/Metaheuristicas/Bibliography/1983-Science-Kirkpatrick-sim_anneal.pdf'>https://sci2s.ugr.es/sites/default/files/files/Teaching/GraduatesCourses/Metaheuristicas/Bibliography/1983-Science-Kirkpatrick-sim_anneal.pdf</a>
-and
 <a href='https://projecteuclid.org/download/pdf_1/euclid.ss/1177011077'>https://projecteuclid.org/download/pdf_1/euclid.ss/1177011077</a></p>
     </div>
 
@@ -156,10 +155,11 @@ and
   <span class='va'>current</span>,
   alpha <span class='op'>=</span> <span class='fl'>0.5</span>,
   <span class='va'>index</span>,
+  <span class='va'>tries</span>,
   max.tries <span class='op'>=</span> <span class='cn'>Inf</span>,
   method <span class='op'>=</span> <span class='st'>"linear"</span>,
-  eps <span class='op'>=</span> <span class='fl'>0.001</span>,
   cur_index <span class='op'>=</span> <span class='cn'>NA</span>,
+  t0 <span class='op'>=</span> <span class='fl'>0.01</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -179,6 +179,10 @@ and
       <td><p>index function</p></td>
     </tr>
     <tr>
+      <th>tries</th>
+      <td><p>the counter of the outer loop of the opotimiser</p></td>
+    </tr>
+    <tr>
       <th>max.tries</th>
       <td><p>maximum number of iteration before giving up</p></td>
     </tr>
@@ -187,12 +191,12 @@ and
       <td><p>whether the nearby bases are found by a linear/ geodesic formulation</p></td>
     </tr>
     <tr>
-      <th>eps</th>
-      <td><p>???</p></td>
-    </tr>
-    <tr>
       <th>cur_index</th>
       <td><p>the index value of the current basis</p></td>
+    </tr>
+    <tr>
+      <th>t0</th>
+      <td><p>initial decrease in temperature</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -201,6 +205,13 @@ and
     </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='display_xy.html'>animate_xy</a></span><span class='op'>(</span><span class='va'>flea</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>, <span class='fu'><a href='guided_tour.html'>guided_tour</a></span><span class='op'>(</span><span class='fu'><a href='holes.html'>holes</a></span><span class='op'>(</span><span class='op'>)</span>, search_f <span class='op'>=</span> <span class='va'>search_better_random</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Converting input data to the required matrix format.</span></div><div class='output co'>#&gt; target_dist - cur_dist: 0 
+#&gt; Old 0.2448019 
+#&gt; New 0.5988702 try 1 
+#&gt; Accept 
+#&gt; generation:  dist =   1.776212 </div><div class='output co'>#&gt; <span class='message'>Using half_range 0.98</span></div><div class='img'><img src='search_better_random-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; target_dist - cur_dist: 1.776212 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
